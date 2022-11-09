@@ -1,0 +1,12 @@
+{
+  "name": "test",
+  "id": "1171788056195740547",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "editorType": [
+    "figma",
+    "figjam"
+  ],
+  "containsWidget": true,
+  "widgetApi": "1.0.0"
+}
