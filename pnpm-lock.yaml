@@ -17,12 +17,12 @@ importers:
       '@figma/plugin-typings': '*'
       '@figma/widget-typings': '*'
       esbuild: ^0.15.13
-      typescript: 4.9.2-rc
+      typescript: 4.9.3
     devDependencies:
       '@figma/plugin-typings': 1.55.1
       '@figma/widget-typings': 1.5.0_tji327dbxeexkvrixnysfxcwei
       esbuild: 0.15.13
-      typescript: 4.9.2-rc
+      typescript: 4.9.3
 
   apps/test:
     specifiers:
@@ -1515,8 +1515,8 @@ packages:
     hasBin: true
     dev: true
 
-  /typescript/4.9.2-rc:
-    resolution: {integrity: sha512-Ly9UUxJBfiiFjfegI1gsW9FI8Xhw1cuwRMBJ4wdYg+UXZR4VnZvD1OnBDj/iQ2U+tWbWEjYqJ5xx1Cwr4Vsa4w==}
+  /typescript/4.9.3:
+    resolution: {integrity: sha512-CIfGzTelbKNEnLpLdGFgdyKhG23CKdKgQPOBc+OUNrkJ2vr+KSzsSV5kq5iWhEQbok+quxgGzrAtGWCyU7tHnA==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
