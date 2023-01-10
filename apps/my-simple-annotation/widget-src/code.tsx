@@ -153,6 +153,8 @@ const annotationIcon = ({ size, color, isOpen, isFlip }: AnnotationIcon) =>
             <rect x='68' y='46' width='8' height='8' rx='4' fill='white'/>
           </svg>`;
 
+const borderColor = '#e7e7e7';
+
 function Widget() {
   const [isOpen, setIsOpen] = useSyncedState('isOpen', true);
   const [isReverse, setIsReverse] = useSyncedState('isReverse', false);
@@ -318,6 +320,8 @@ function Widget() {
                 direction="vertical"
                 fill="#fff"
                 width="fill-parent"
+                stroke={borderColor}
+                strokeWidth={1}
                 cornerRadius={padding}
                 spacing={halfPadding}
               >
@@ -384,7 +388,7 @@ function Widget() {
                     {annotationMap.size > 0 && (
                       <>
                         <Rectangle
-                          fill="#e8e8e8"
+                          fill={borderColor}
                           width="fill-parent"
                           height={1}
                         />
