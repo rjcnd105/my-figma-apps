@@ -1,3 +1,9 @@
+### Widgets
+
+- [my-simple-annotation](https://www.figma.com/community/widget/1171752968370270013/my-simple-annotation-kr)
+
+
+---
 Below are the steps to get your widget running. You can also find instructions at:
 
 https://www.figma.com/widget-docs/setup-guide/
