@@ -113,7 +113,9 @@ const letterSpacings = {
   large: -1.2,
 };
 
-const FlipIcon = (isActive: boolean) => `<svg width='18' height='18' viewBox='0 0 32 32' fill='none' stroke='#d2d2d2' stroke-width='2' xmlns='http://www.w3.org/2000/svg'>
+const FlipIcon = (
+  isActive: boolean,
+) => `<svg width='18' height='18' viewBox='0 0 32 32' fill='none' stroke='#d2d2d2' stroke-width='2' xmlns='http://www.w3.org/2000/svg'>
 <path d='M31 27V3L22 7.3871V23.3871L31 27Z' stroke='white' stroke-dasharray='2 2'/>
 <path d='M1 27V3L10 7.3871V23.3871L1 27Z' stroke='white'/>
 <line x1='16.1342' y1='-2.33127e-08' x2='16.1342' y2='32' stroke='white'/>
@@ -121,35 +123,35 @@ const FlipIcon = (isActive: boolean) => `<svg width='18' height='18' viewBox='0 
 `;
 
 type AnnotationIcon = {
-  size: Number
-  color: string
-  isOpen: boolean
-  isFlip?: boolean
-}
-const annotationIcon = ({ size, color, isOpen, isFlip }: AnnotationIcon) => isOpen ?
-  isFlip ?
-    `<svg width='${size}' height='${size}' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'>
+  size: Number;
+  color: string;
+  isOpen: boolean;
+  isFlip?: boolean;
+};
+const annotationIcon = ({ size, color, isOpen, isFlip }: AnnotationIcon) =>
+  isOpen
+    ? isFlip
+      ? `<svg width='${size}' height='${size}' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'>
       <path
         d='M100 50C100 22.3858 77.6142 0 50 0V0C22.3858 0 0 22.3858 0 50V50C0 77.6142 22.3858 100 50 100H90.9091C95.9299 100 100 95.9299 100 90.9091V50Z'
         fill='${color}' />
       <rect width='8' height='8' rx='4' transform='matrix(-1 0 0 1 76 46)' fill='white' />
       <rect width='8' height='8' rx='4' transform='matrix(-1 0 0 1 54 46)' fill='white' />
       <rect width='8' height='8' rx='4' transform='matrix(-1 0 0 1 32 46)' fill='white' />
-    </svg>` :
-    `<svg width='${size}' height='${size}' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg' >
+    </svg>`
+      : `<svg width='${size}' height='${size}' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg' >
     <path d='M0 50C0 22.3858 22.3858 0 50 0V0C77.6142 0 100 22.3858 100 50V50C100 77.6142 77.6142 100 50 100H9.09091C4.07014 100 0 95.9299 0 90.9091V50Z' fill='${color}'/>
     <rect x='24' y='46' width='8' height='8' rx='4' fill='white'/>
     <rect x='46' y='46' width='8' height='8' rx='4' fill='white'/>
     <rect x='68' y='46' width='8' height='8' rx='4' fill='white'/>
     </svg>
     `
-  : `<svg width='${size}' height='${size}' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'  >
+    : `<svg width='${size}' height='${size}' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'  >
             <rect width='100' height='100' rx='50' fill='${color}'/>
             <rect x='24' y='46' width='8' height='8' rx='4' fill='white'/>
             <rect x='46' y='46' width='8' height='8' rx='4' fill='white'/>
             <rect x='68' y='46' width='8' height='8' rx='4' fill='white'/>
           </svg>`;
-
 
 function Widget() {
   const [isOpen, setIsOpen] = useSyncedState('isOpen', true);
@@ -162,6 +164,7 @@ function Widget() {
   const annotationMap = useSyncedMap<string>('comments');
   const [title, setTitle] = useSyncedState<string>('title', '');
   const [isViewTitle, setIsViewTitle] = useSyncedState('viewTitle', true);
+  const [isViewDate, setIsViewDate] = useSyncedState('viewDate', true);
   const handleToggleOpen = () => {
     setIsOpen((_isOpen) => !_isOpen);
   };
@@ -204,10 +207,18 @@ function Widget() {
         tooltip: 'view title',
         icon: `<svg width='16' height='17' viewBox='0 0 16 17' fill='none' xmlns='http://www.w3.org/2000/svg'>
 <path d='M0.920898 1.06308H15V4.76434H10.2763V16.0522H5.64461V4.76434H0.920898V1.06308Z' stroke='white' stroke-width='1' stroke-dasharray='1 1'/>
-</svg>
-`,
+</svg>`,
         propertyName: 'viewTitle',
         isToggled: isViewTitle,
+      },
+      {
+        itemType: 'toggle',
+        tooltip: 'view date',
+        icon: `<svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M3.97208 4.42154C3.49208 4.42154 3.03596 4.23641 2.67392 3.90536C2.50372 3.74968 2.47984 3.47099 2.62068 3.28281C2.76148 3.09468 3.0136 3.06828 3.18384 3.22396C3.4038 3.4251 3.68004 3.53723 3.97208 3.53723C4.6448 3.53723 5.18836 2.94611 5.19208 2.21828H1.2C0.978852 2.21828 0.8 2.4161 0.8 2.66044V5.7663H14.0242C14.2452 5.7663 14.4242 5.96425 14.4242 6.20846C14.4242 6.45266 14.2452 6.65061 14.0242 6.65061H0.8V12.3878C0.8 12.6322 0.978852 12.83 1.2 12.83H14.8C15.0212 12.83 15.2 12.6322 15.2 12.3878V2.66044C15.2 2.4161 15.0212 2.21828 14.8 2.21828H13.9288C13.9251 3.43659 13.0207 4.42154 11.9088 4.42154C11.4282 4.42154 10.9729 4.23658 10.6106 3.90536C10.4404 3.74968 10.4166 3.47099 10.5574 3.28281C10.6982 3.09468 10.9503 3.06828 11.1206 3.22396C11.3408 3.42532 11.6163 3.53723 11.9088 3.53723C12.581 3.53723 13.125 2.94576 13.1288 2.21828H5.99208C5.98836 3.43686 5.08452 4.42154 3.97208 4.42154ZM14.8 1.33397H13.7638C13.4535 0.548664 12.7391 0 11.9088 0C11.095 0 10.3698 0.531031 10.0529 1.33397H5.82716C5.51704 0.548567 4.80284 0 3.97208 0C3.15892 0 2.43388 0.531168 2.117 1.33397H1.2C0.5369 1.33397 0 1.92788 0 2.66044V12.3878C0 13.1204 0.5369 13.7143 1.2 13.7143H14.8C15.4631 13.7143 16 13.1204 16 12.3878V2.66044C16 1.92788 15.4631 1.33397 14.8 1.33397ZM11.9088 0.884303C12.2738 0.884303 12.6009 1.05838 12.8243 1.33397H10.9919C11.2184 1.0548 11.5488 0.884303 11.9088 0.884303ZM4.88784 1.33397C4.66452 1.05834 4.33744 0.884303 3.97208 0.884303C3.6126 0.884303 3.28236 1.0548 3.056 1.33397H4.88784Z" fill="white"/>
+</svg>`,
+        propertyName: 'viewDate',
+        isToggled: isViewDate,
       },
     ],
     (v) => {
@@ -227,97 +238,129 @@ function Widget() {
         case 'viewTitle':
           setIsViewTitle(!isViewTitle);
           break;
+        case 'viewDate':
+          setIsViewDate(!isViewDate);
+          break;
       }
     },
   );
   const currentSize = sizeNumber[size];
   const fontSize = fontSizes[size];
-  const padding = fontSize * 0.6;
+  const padding = fontSize * 0.65;
   const halfPadding = padding / 1.8;
-  const titleSize = fontSize * .85;
+  const thirdPadding = padding / 2.7;
+  const titleSize = fontSize * 0.88;
   const letterSpacing = letterSpacings[size];
   return (
     <AutoLayout
-      direction='horizontal'
-
+      direction="horizontal"
       spacing={halfSizeNum}
       width={sizeNum + fontSize * 21}
       horizontalAlignItems={isReverse ? 'end' : 'start'}
     >
-      <AutoLayout padding={padding} width='fill-parent' direction='vertical' spacing={halfPadding}>
-        <AutoLayout width='fill-parent' direction='horizontal'>
-          {!isReverse && <AutoLayout onClick={handleToggleOpen} width='hug-contents' spacing={halfSizeNum}>
-            <SVG
-              src={annotationIcon({ size: currentSize, color, isOpen, isFlip: isReverse })}
-            />
-          </AutoLayout>}
-
+      <AutoLayout
+        padding={padding}
+        width="fill-parent"
+        direction="vertical"
+        spacing={halfPadding}
+      >
+        <AutoLayout width="fill-parent" direction="horizontal">
+          {!isReverse && (
+            <AutoLayout
+              onClick={handleToggleOpen}
+              width="hug-contents"
+              spacing={halfSizeNum}
+            >
+              <SVG
+                src={annotationIcon({
+                  size: currentSize,
+                  color,
+                  isOpen,
+                  isFlip: isReverse,
+                })}
+              />
+            </AutoLayout>
+          )}
 
           <Rectangle width={padding} height={currentSize} />
-          <AutoLayout width='fill-parent' direction='vertical' spacing={halfPadding}>
-            {isViewTitle && <Input
-              fontSize={titleSize}
-              horizontalAlignText={isReverse ? 'right' : 'left'}
-              width='fill-parent'
-              fontFamily='Noto Sans KR'
-              fill='#000'
-              value={title}
-
-              lineHeight={currentSize}
-              inputFrameProps={{
-                cornerRadius: 2,
-              }}
-              onTextEditEnd={(e) => {
-                setTitle(e.characters);
-              }}
-              placeholder='title'
-              letterSpacing={letterSpacing}
-            />}
+          <AutoLayout
+            width="fill-parent"
+            direction="vertical"
+            spacing={halfPadding}
+          >
+            {isViewTitle && (
+              <AutoLayout width="fill-parent" direction="horizontal">
+                <Rectangle width={thirdPadding} height="fill-parent" />
+                <Input
+                  fontSize={titleSize}
+                  horizontalAlignText={isReverse ? 'right' : 'left'}
+                  width="fill-parent"
+                  fontFamily="Noto Sans KR"
+                  fill="#000"
+                  value={title}
+                  lineHeight={currentSize}
+                  inputFrameProps={{
+                    cornerRadius: 2,
+                  }}
+                  placeholderProps={{
+                    opacity: 0.25,
+                  }}
+                  onTextEditEnd={(e) => {
+                    setTitle(e.characters);
+                  }}
+                  placeholder=" 제목"
+                  letterSpacing={letterSpacing}
+                />
+              </AutoLayout>
+            )}
             {isOpen && (
               <AutoLayout
-                direction='vertical'
-
-                fill='#fff'
-                width='fill-parent'
+                direction="vertical"
+                fill="#fff"
+                width="fill-parent"
+                cornerRadius={padding}
                 spacing={halfPadding}
               >
                 <AutoLayout
-                  cornerRadius={2}
                   // strokeWidth={0.5}
-                  width='fill-parent'
-                  direction='vertical'
+                  width="fill-parent"
+                  direction="vertical"
                 >
-                  {[...annotationMap.entries()].map(([key, annotation]) => {
+                  {[...annotationMap.entries()].map(([key, annotation], i) => {
                     const date = new Date(Number(key));
                     return (
                       <AutoLayout
                         padding={padding}
                         spacing={2}
-                        direction='vertical'
-                        width='fill-parent'
+                        direction="vertical"
+                        width="fill-parent"
                         key={key}
                       >
-                        <Text
-                          fontSize={padding}
-                          fill='#777'
-                          fontFamily='Noto Sans KR'
-                          fontWeight={300}
-                          letterSpacing={letterSpacing * 0.5}
-                          lineHeight='140%'
-                        >
-                          {date.getFullYear()}-{date.getMonth() + 1}-{date.getDate()}{' '}
-                          {date.getHours()}:{date.getMinutes()}
-                        </Text>
+                        {isViewDate && (
+                          <Text
+                            fontSize={padding}
+                            fill="#777"
+                            fontFamily="Noto Sans KR"
+                            fontWeight={300}
+                            letterSpacing={letterSpacing * 0.5}
+                            lineHeight="140%"
+                          >
+                            {date.getFullYear()}-{date.getMonth() + 1}-
+                            {date.getDate()} {date.getHours()}:
+                            {date.getMinutes()}
+                          </Text>
+                        )}
                         <Input
-                          fontFamily='Noto Sans KR'
-                          width='fill-parent'
+                          fontFamily="Noto Sans KR"
+                          width="fill-parent"
                           fontSize={fontSize}
-                          fill='#333'
+                          fill="#424242"
                           onTextEditEnd={(e) => {
-                            if (e.characters === '') return annotationMap.delete(key);
+                            if (e.characters === '')
+                              return annotationMap.delete(key);
                             annotationMap.set(key, e.characters);
                           }}
-                          placeholder='remove'
+                          placeholder="remove"
                           inputFrameProps={{
                             cornerRadius: 2,
                           }}
@@ -325,9 +368,9 @@ function Widget() {
                             fill: '#000',
                           }}
                           value={annotation}
-                          lineHeight='140%'
+                          lineHeight="160%"
                           letterSpacing={letterSpacing}
-                          inputBehavior='multiline'
+                          inputBehavior="multiline"
                         />
                       </AutoLayout>
                     );
@@ -335,46 +378,73 @@ function Widget() {
 
                   <AutoLayout
                     padding={padding}
-                    spacing={halfPadding}
-                    direction='vertical'
-                    width='fill-parent'
+                    direction="vertical"
+                    width="fill-parent"
                   >
+                    {annotationMap.size > 0 && (
+                      <>
+                        <Rectangle
+                          fill="#e8e8e8"
+                          width="fill-parent"
+                          height={1}
+                        />
+                        <Rectangle width="fill-parent" height={halfPadding} />
+                      </>
+                    )}
+
                     <Input
                       fontSize={fontSize}
-                      width='fill-parent'
-                      fontFamily='Noto Sans KR'
-                      fill='#000'
+                      width="fill-parent"
+                      fontFamily="Noto Sans KR"
+                      fill="#000"
                       // height="hug-contents"
-                      value=''
+                      value=""
                       inputFrameProps={{
                         cornerRadius: 2,
-                        stroke: '#d2d2d2',
-                        padding,
+                        // stroke: '#d2d2d2',
+                        // padding: padding / 3,
                         strokeWidth: 0.5,
                       }}
                       onTextEditEnd={(e) => {
                         if (e.characters !== '')
-                          annotationMap.set('' + new Date().getTime(), e.characters);
+                          annotationMap.set(
+                            '' + new Date().getTime(),
+                            e.characters,
+                          );
                       }}
-                      placeholder='add'
-                      lineHeight='140%'
+                      placeholderProps={{
+                        opacity: 0.25,
+                        fontWeight: 300,
+                      }}
+                      placeholder=" 코멘트"
+                      lineHeight="160%"
                       letterSpacing={letterSpacing}
-                      inputBehavior='multiline'
+                      inputBehavior="multiline"
                     />
                   </AutoLayout>
+                  <Rectangle width="fill-parent" height={thirdPadding} />
                 </AutoLayout>
               </AutoLayout>
             )}
-
           </AutoLayout>
           <Rectangle width={padding} height={currentSize} />
-          {isReverse && <AutoLayout onClick={handleToggleOpen} width='hug-contents' spacing={halfSizeNum}>
-            <SVG
-              src={annotationIcon({ size: currentSize, color, isOpen, isFlip: isReverse })}
-            />
-          </AutoLayout>}
+          {isReverse && (
+            <AutoLayout
+              onClick={handleToggleOpen}
+              width="hug-contents"
+              spacing={halfSizeNum}
+            >
+              <SVG
+                src={annotationIcon({
+                  size: currentSize,
+                  color,
+                  isOpen,
+                  isFlip: isReverse,
+                })}
+              />
+            </AutoLayout>
+          )}
         </AutoLayout>
-
       </AutoLayout>
     </AutoLayout>
   );
